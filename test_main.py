@@ -4,7 +4,7 @@ from playwright.sync_api import Page, expect, sync_playwright
 import allure
 
 @allure.title("Test 1")
-def test_wiki(page):
+def test_wiki1(page):
     with allure.step("Goto https://www.wikipedia.org/"):
         page.goto('https://www.wikipedia.org/')
     page.get_by_role('link', name='Русский').click()

@@ -1,0 +1,39 @@
+name: 'Automated tests'
+
+on: # если, в какой ситуации
+  workflow_dispatch: # запускать в ручном режиме
+    inputs:
+      deployment_target:
+        description: 'Choose target'
+        required: true
+        default:
+        type: choice
+        options:
+          - first_test
+          - second_test
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Chekout repository'
+        uses: actions/checkout@v4 # готовый action
+      - name: 'Setup python'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 'Install dependencies'
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+        #run: sudo apt-get isntall google-chrome-stable
+      - name: 'Install playwright chrome'
+        run: playwright install --with-deps chromium
+
+      - name: 'first_test'
+        if: "github.event.inputs.deployment_target == 'first_test'"
+        run: pytest ./main.py::test_wiki1 -s -v
+      - name: 'second_test'
+        if: "github.event.inputs.deployment_target == 'second_test'"
+        run: pytest ./main.py::test_wiki2 -s -v
