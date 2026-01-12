@@ -3,6 +3,7 @@ name: Automated tests
 on: # если, в какой ситуации
   push
 
+
 jobs:
   test:
     runs-on: ubuntu-latest
