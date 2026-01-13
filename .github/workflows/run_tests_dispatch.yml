@@ -74,7 +74,7 @@ jobs:
       - name: 'Download allure results as artifact'
         uses: actions/download-artifact@v4
       - name: 'Upload Pages artifact'
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
       - name: 'Deploy to GitHub Pages'
         id: deployment
-        uses: actions/deploy-pages@v4 #v1.2.9
+        uses: actions/deploy-pages@v3 #v1.2.9
