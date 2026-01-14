@@ -12,6 +12,12 @@ on: # если, в какой ситуации
           - first_test
           - second_test
 
+
+permissions: # права
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
