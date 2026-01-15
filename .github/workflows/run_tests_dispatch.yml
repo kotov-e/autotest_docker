@@ -41,7 +41,19 @@ jobs:
           -H "Authorization: Bearer $${{ secrets.TOKEN }}"
           -H "X-GitHub-Api-Version: 2022-11-28"
           "https://api.github.com/repos/kotov-e/autotest_docker/actions/artifacts/$ARTIFACT_ID/zip" -o allure-results.zip
+
+      - name: 'Debug - Show downloaded file'
+        run: |
+                  echo "Current directory: $(pwd)"
+                  echo "Files:" ls -la
+                  echo "File size: $(wc -c < allure-results.zip)"
+                  echo "First 100 chars:"
+                  head -c 100 allure-results.zip | cat -A
+                  echo -e "\nFile type:"
+                  file allure-results.zip || true          
+
       - run:  mkdir allure-results && unzip allure-results.zip -d allure-results
+
       - name: 'Store allure history'
         uses: actions/upload-artifact@v4
         with:
@@ -75,16 +87,6 @@ jobs:
 
       - name: 'Download history'
         uses: actions/download-artifact@v4
-      - name: 'Debug - Show downloaded file'
-        run: |
-                  echo "Current directory: $(pwd)"
-                  echo "Files:" ls -la
-                  echo "File size: $(wc -c < allure-results.zip)"
-                  echo "First 100 chars:"
-                  head -c 100 allure-results.zip | cat -A
-                  echo -e "\nFile type:"
-                  file allure-results.zip || true
-        
 
       - name: 'first_test'
         if: "github.event.inputs.deployment_target == 'first_test'"
