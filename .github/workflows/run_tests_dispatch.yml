@@ -47,7 +47,10 @@ jobs:
                   echo "Current directory: $(pwd)"
                   echo "Files: $(ls -la)" 
                   echo "File size: $(wc -c < allure-results.zip)"
-                  file allure-results.zip || true          
+                  echo "File content: 
+                  cat allure-results.zip
+                  echo ""
+                  
 
       - run:  mkdir allure-results && unzip allure-results.zip -d allure-results
 
