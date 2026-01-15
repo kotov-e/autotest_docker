@@ -119,7 +119,7 @@ jobs:
         uses: actions/download-artifact@v4
       - run: allure generate -c allure-results -o _site
       - name: 'Save generated report as artifact'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3 #v4 (409) Conflict: an artifact with this name already exists on the workflow run
         with:
           name: _site
           path:
