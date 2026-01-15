@@ -45,7 +45,7 @@ jobs:
       - name: 'Debug - Show downloaded file'
         run: |
                   echo "Current directory: $(pwd)"
-                  echo "Files:" ls -la
+                  echo "Files: $(ls -la)" 
                   echo "File size: $(wc -c < allure-results.zip)"
                   file allure-results.zip || true          
 
