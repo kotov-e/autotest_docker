@@ -47,7 +47,7 @@ jobs:
                   echo "Current directory: $(pwd)"
                   echo "Files: $(ls -la)" 
                   echo "File size: $(wc -c < allure-results.zip)"
-                  echo "File content: 
+                  echo "File content:" 
                   cat allure-results.zip
                   echo ""
                   
