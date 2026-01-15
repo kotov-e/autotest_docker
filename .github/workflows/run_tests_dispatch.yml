@@ -32,13 +32,8 @@ jobs:
       - run: |
           echo "Set ARTIFACT_ID"
           ARTIFACT_ID=$(curl -L -H "Accept: application/vnd.github.v3+json" -H "X-GitHub-Api-Version: 2022-11-28" "https://api.github.com/repos/kotov-e/autotest_docker/actions/artifacts?name=allure-results" | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id']);")
-          echo "ARTIFACT_ID: $ARTIFACT_ID" \
-          &&
-          curl -L \
-          -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: Bearer $${{ secrets.TOKEN }}" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          "https://api.github.com/repos/kotov-e/autotest_docker/actions/artifacts/$ARTIFACT_ID/zip" -o allure-results.zip
+          echo "ARTIFACT_ID: $ARTIFACT_ID" 
+          curl -L -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer $${{ secrets.TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" "https://api.github.com/repos/kotov-e/autotest_docker/actions/artifacts/$ARTIFACT_ID/zip" -o allure-results.zip
 
       - name: 'Debug - Show downloaded file'
         run: |    
