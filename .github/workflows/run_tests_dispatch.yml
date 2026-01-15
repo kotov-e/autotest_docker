@@ -34,7 +34,7 @@ jobs:
           -H "Accept: application/vnd.github.v3+json" \ 
           -H "X-GitHub-Api-Version: 2022-11-28" \
           "https://api.github.com/repos/kotov-e/autotest_docker/actions/artifacts?name=allure-results" \ 
-          | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id']);") \
+          | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id']);") 
           &&
           curl -L \
           -H "Accept: application/vnd.github.v3+json" \
@@ -44,14 +44,13 @@ jobs:
 
       - name: 'Debug - Show downloaded file'
         run: |    
-                  echo "ARTIFACT_ID: $ARTIFACT_ID"
-                  echo "Current directory: $(pwd)"
-                  echo "Files: $(ls -la)" 
-                  echo "File size: $(wc -c < allure-results.zip)"
-                  echo "File content:" 
-                  cat allure-results.zip
-                  echo ""
-                  
+          echo "ARTIFACT_ID: $ARTIFACT_ID"
+          echo "Current directory: $(pwd)"
+          echo "Files: $(ls -la)" 
+          echo "File size: $(wc -c < allure-results.zip)"
+          echo "File content:" 
+          cat allure-results.zip
+                            
 
       - run:  mkdir allure-results && unzip allure-results.zip -d allure-results
 
