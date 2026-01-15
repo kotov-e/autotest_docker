@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: 'Set ARTIFACT_ID'
+          
       - run: >
           ARTIFACT_ID=$(curl -L 
           -H "Accept: application/vnd.github.v3+json" 
