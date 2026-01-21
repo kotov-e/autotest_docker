@@ -1,5 +1,6 @@
 
 import pytest
+import json
 import allure
 import os
 from logging import getLogger, basicConfig, DEBUG, ERROR, CRITICAL, INFO, FileHandler, StreamHandler, Formatter
@@ -71,3 +72,4 @@ def test_wiki3(page: Page):
     expect(page.locator(".firstHeading.mw-first-heading")).to_contain_text("Википедия")
     logger.debug("Test 3 is done")
     logger.critical("INFO CRITICAL MESSAGE")
+

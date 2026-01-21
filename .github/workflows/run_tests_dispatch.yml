@@ -12,55 +12,54 @@ on: # если, в какой ситуации
           - first_test
           - second_test
 
-
 permissions: # права
   contents: write
   pages: write
   id-token: write
 
-jobs:
-  download-history:
-    runs-on: ubuntu-latest
-
-    name: 'Download history'
-    steps:
-      - name: 'Setup python'
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          
-      - run: |
-          echo "Set ARTIFACT_ID"
-          ARTIFACT_ID=$(curl -L \
-          -H "Accept: application/vnd.github.v3+json" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          "https://api.github.com/repos/kotov-e/autotest_docker/actions/artifacts?name=allure-results" \
-          | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id']);") \
-          && \
-          curl -L \
-          -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          "https://api.github.com/repos/kotov-e/autotest_docker/actions/artifacts/$ARTIFACT_ID/zip" -o artifact.zip
-
-      - name: 'Debug - Show downloaded file'
-        run: |    
-          echo "Artifact ID: $ARTIFACT_ID"
-          echo "Current directory: $(pwd)"
-          echo "Files: $(ls -la)" 
-          echo "File size: $(wc -c < artifact.zip)"
-          echo "File content:" 
-          cat artifact.zip
-                            
-
-      - run:  mkdir allure-results && unzip artifact.zip -d allure-results
-
-      - name: 'Store allure history'
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results
-          path: allure-results
-          retention-days: 1
+#jobs:
+#  download-history:
+#    runs-on: ubuntu-latest
+#
+#    name: 'Download history'
+#    steps:
+#      - name: 'Setup python'
+#        uses: actions/setup-python@v5
+#        with:
+#          python-version: "3.12"
+#
+#      - run: |
+#          echo "Set ARTIFACT_ID"
+#          ARTIFACT_ID=$(curl -L \
+#          -H "Accept: application/vnd.github.v3+json" \
+#          -H "X-GitHub-Api-Version: 2022-11-28" \
+#          "https://api.github.com/repos/kotov-e/autotest_docker/actions/artifacts?name=allure-results" \
+#          | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id']);") \
+#          && \
+#          curl -L \
+#          -H "Accept: application/vnd.github.v3+json" \
+#          -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
+#          -H "X-GitHub-Api-Version: 2022-11-28" \
+#          "https://api.github.com/repos/kotov-e/autotest_docker/actions/artifacts/$ARTIFACT_ID/zip" -o artifact.zip
+#
+#      - name: 'Debug - Show downloaded file'
+#        run: |
+#          echo "Artifact ID: $ARTIFACT_ID"
+#          echo "Current directory: $(pwd)"
+#          echo "Files: $(ls -la)"
+#          echo "File size: $(wc -c < artifact.zip)"
+#          echo "File content:"
+#          cat artifact.zip
+#
+#
+#      - run:  mkdir allure-results && unzip artifact.zip -d allure-results
+#
+#      - name: 'Store allure history'
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: allure-results
+#          path: allure-results
+#          retention-days: 1
 
 
 
@@ -98,7 +97,7 @@ jobs:
         run: pytest ./test_main.py::test_wiki2 -s -v --alluredir=allure-results
 
       - name: 'Save allure results'
-        uses: actions/upload-artifact@v3 # (409) Conflict: an artifact with this name already exists on the workflow run
+        uses: actions/upload-artifact@v4 # v4 (409) Conflict: an artifact with this name already exists on the workflow run
         with:
           name: allure-results
           path: allure-results
@@ -119,7 +118,7 @@ jobs:
         uses: actions/download-artifact@v4
       - run: allure generate -c allure-results -o _site
       - name: 'Save generated report as artifact'
-        uses: actions/upload-artifact@v3 #v4 (409) Conflict: an artifact with this name already exists on the workflow run
+        uses: actions/upload-artifact@v4 #v4 (409) Conflict: an artifact with this name already exists on the workflow run
         with:
           name: _site
           path:
