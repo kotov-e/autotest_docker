@@ -17,7 +17,7 @@ permissions: # права
   pages: write
   id-token: write
 
-#jobs:
+jobs:
 #  download-history:
 #    runs-on: ubuntu-latest
 #
