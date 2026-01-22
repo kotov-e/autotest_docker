@@ -65,7 +65,9 @@ permissions: # права
 jobs:
   test:
     runs-on: ubuntu-latest
-    #needs: download-history
+    outputs:
+      first_test: ${{ steps.first_test.outputs }}
+      second_test: ${{ steps.second_test.outputs }}
 
     steps:
       - name: 'Chekout repository'
@@ -113,8 +115,7 @@ jobs:
         uses: actions/upload-artifact@v4 #v4 (409) Conflict: an artifact with this name already exists on the workflow run
         with:
           name: _site
-          path:
-            _site
+          path: _site
           retention-days: 1 # сохранять артефакты не более 1 дня
 
   publish-report:
@@ -129,3 +130,15 @@ jobs:
       - name: 'Deploy to GitHub Pages'
         id: deployment
         uses: actions/deploy-pages@v4 #v1.2.9
+
+      # отправка сообщения в группу телеграм
+      - name: 'Success'
+        description: 'Send message to telegram if tests passed'
+        if: needs.first_test.outputs == 'success'
+        run: |
+            curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage"
+      - name: 'Failure'
+        description: 'Send message to telegram if tests failed'
+        if: steps.test.status == 'failure'
+        run: |
+            curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage"
