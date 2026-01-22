@@ -133,12 +133,12 @@ jobs:
 
       # отправка сообщения в группу телеграм
       #description: 'Send message to telegram if tests passed'
-      - name: 'Success'
+      - name: 'Send message success'
         if: needs.first_test.outputs == 'success'
         run: |
             curl --location 'https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage' --header 'Content-Type: application/json' --data '{ "chat_id": 1293461593, "text": "✅ Test passed. Report is available at https://kotov-e.github.io/autotest_docker/", "parse_mode": "HTML" }'
-      - name: 'Failure'
+      - name: 'Send message failure'
       #description: 'Send message to telegram if tests failed'
-        if: needs.second_test.outputs != 'success'
+        if: needs.first_test.outputs != 'success'
         run: |
             curl --location 'https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage' --header 'Content-Type: application/json' --data '{ "chat_id": 1293461593, "text": "❌ Test failed. Report is available at https://kotov-e.github.io/autotest_docker/", "parse_mode": "HTML"  }'
