@@ -132,13 +132,13 @@ jobs:
         uses: actions/deploy-pages@v4 #v1.2.9
 
       # отправка сообщения в группу телеграм
+      #description: 'Send message to telegram if tests passed'
       - name: 'Success'
-        #description: 'Send message to telegram if tests passed'
         if: needs.first_test.outputs == 'success'
         run: |
-            curl --location 'https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage' --header 'Content-Type: application/json' --data '{ "chat_id": 1293461593, "text": "✅ Test passed. Report is available at https://kotov-e.github.io/autotest_docker/" }'
+            curl --location 'https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage' --header 'Content-Type: application/json' --data '{ "chat_id": 1293461593, "text": "✅ Test passed. Report is available at https://kotov-e.github.io/autotest_docker/", "parse_mode": "HTML" }'
       - name: 'Failure'
-        #description: 'Send message to telegram if tests failed'
+      #description: 'Send message to telegram if tests failed'
         if: needs.second_test.outputs != 'success'
         run: |
-            curl --location 'https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage' --header 'Content-Type: application/json' --data '{ "chat_id": 1293461593, "text": "Test failed. Report is available at https://kotov-e.github.io/autotest_docker/" }'
+            curl --location 'https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage' --header 'Content-Type: application/json' --data '{ "chat_id": 1293461593, "text": "❌ Test failed. Report is available at https://kotov-e.github.io/autotest_docker/", "parse_mode": "HTML"  }'
